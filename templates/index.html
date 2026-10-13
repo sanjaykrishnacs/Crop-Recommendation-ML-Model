@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Talkz - AI Agronomist Platform</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Configure Custom Tailwind Theme & CSS -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        earth: {
+                            50: '#f6f7f6',
+                            100: '#e7ebe6',
+                            200: '#d0d8cd',
+                            300: '#aebca9',
+                            400: '#869a7f',
+                            500: '#657b5e',
+                            600: '#4e6149',
+                            700: '#3f4f3b',
+                            800: '#344031',
+                            900: '#2a3429',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom CSS overrides */
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Hide number input arrows for a cleaner look */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; margin: 0; 
+        }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* Custom Input Validation Styles */
+        .input-group input:not(:placeholder-shown):valid {
+            border-color: #10b981; /* emerald-500 */
+        }
+        .input-group input:not(:placeholder-shown):invalid {
+            border-color: #ef4444; /* red-500 */
+        }
+        
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #e7ebe6;
+            border-top: 4px solid #10b981;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-earth-50 text-earth-900 antialiased flex flex-col min-h-screen">
+
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-earth-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-md">
+                        🌱
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-earth-800">Crop Talkz</span>
+                </div>
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-earth-600 hover:text-emerald-600 font-medium transition-colors">Home</a>
+                    <a href="#about" class="text-earth-600 hover:text-emerald-600 font-medium transition-colors">About AI</a>
+                    <a href="#predict" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        Try the Tool
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="pt-28 pb-20 lg:pt-40 lg:pb-28 overflow-hidden relative">
+        <!-- Background decorative elements -->
+        <div class="absolute top-0 right-0 -z-10 w-full h-full overflow-hidden opacity-40">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+            <div class="absolute top-48 -left-24 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="text-left">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-earth-900 leading-tight mb-6">
+                        Data-Driven <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-400">Agriculture</span> for the Modern Farmer.
+                    </h1>
+                    <p class="text-lg text-earth-600 mb-8 max-w-xl leading-relaxed">
+                        Stop guessing. Use precise soil nutrient data and environmental weather patterns to determine exactly which crop will yield the best results on your land. Powered by Machine Learning.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#predict" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3.5 rounded-xl font-semibold text-lg text-center transition-all shadow-lg hover:shadow-emerald-600/30 flex items-center justify-center gap-2">
+                            Analyze My Soil
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        </a>
+                        <a href="#about" class="bg-white border-2 border-earth-200 hover:border-earth-300 text-earth-700 px-8 py-3.5 rounded-xl font-semibold text-lg text-center transition-all">
+                            How it Works
+                        </a>
+                    </div>
+                </div>
+                <!-- Hero Image/Illustration (CSS drawn landscape) -->
+                <div class="hidden lg:block relative h-[400px] w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-earth-100">
+                    <div class="absolute inset-0 bg-gradient-to-b from-blue-50 to-emerald-50"></div>
+                    <!-- Sun -->
+                    <div class="absolute top-8 right-12 w-16 h-16 bg-amber-300 rounded-full shadow-[0_0_40px_rgba(252,211,77,0.8)]"></div>
+                    <!-- Hills -->
+                    <div class="absolute -bottom-10 -left-20 w-96 h-64 bg-emerald-600 rounded-full opacity-80"></div>
+                    <div class="absolute -bottom-20 right-0 w-[30rem] h-80 bg-emerald-500 rounded-full opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 w-full h-32 bg-emerald-700"></div>
+                    <!-- Data overlay mock -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">📊</div>
+                            <div>
+                                <div class="text-sm font-bold text-earth-800">Random Forest API</div>
+                                <div class="text-xs text-earth-500">Accuracy: 99.3%</div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="h-2 w-32 bg-earth-200 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 w-3/4"></div></div>
+                            <div class="h-2 w-24 bg-earth-200 rounded-full overflow-hidden"><div class="h-full bg-amber-500 w-1/2"></div></div>
+                            <div class="h-2 w-36 bg-earth-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 w-5/6"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="predict" class="py-20 bg-earth-100 relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-earth-900 mb-4">AI Agronomist Tool</h2>
+                <p class="text-earth-600 max-w-2xl mx-auto">Enter your soil's macronutrients and local weather averages. Our machine learning model will analyze the data against thousands of agricultural records.</p>
+            </div>
+
+            <!-- Form Container -->
+            <div id="form-container" class="bg-white rounded-3xl shadow-xl border border-earth-200 p-6 sm:p-10 transition-all duration-500">
+                <form id="prediction-form" class="space-y-8">
+                    
+                    <!-- Form Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <!-- Macronutrients Section -->
+                        <div class="col-span-1 md:col-span-2 lg:col-span-3 pb-2 border-b border-earth-100">
+                            <h3 class="text-lg font-semibold text-earth-800 flex items-center gap-2">
+                                <span class="bg-amber-100 text-amber-700 p-1.5 rounded-lg">🧪</span> Soil Macronutrients
+                            </h3>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="nitrogen" class="block text-sm font-medium text-earth-700 mb-1.5">Nitrogen (N) <span class="text-xs text-earth-400 font-normal ml-1">Ratio</span></label>
+                            <input type="number" id="nitrogen" required min="0" max="150" placeholder="e.g. 90" 
+                                class="w-full bg-earth-50 border-2 border-earth-200 text-earth-900 text-lg rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors shadow-sm placeholder:text-earth-300">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="phosphorus" class="block text-sm font-medium text-earth-700 mb-1.5">Phosphorus (P) <span class="text-xs text-earth-400 font-normal ml-1">Ratio</span></label>
+                            <input type="number" id="phosphorus" required min="0" max="150" placeholder="e.g. 42" 
+                                class="w-full bg-earth-50 border-2 border-earth-200 text-earth-900 text-lg rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors shadow-sm placeholder:text-earth-300">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="potassium" class="block text-sm font-medium text-earth-700 mb-1.5">Potassium (K) <span class="text-xs text-earth-400 font-normal ml-1">Ratio</span></label>
+                            <input type="number" id="potassium" required min="0" max="250" placeholder="e.g. 43" 
+                                class="w-full bg-earth-50 border-2 border-earth-200 text-earth-900 text-lg rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors shadow-sm placeholder:text-earth-300">
+                        </div>
+
+                        <div class="input-group md:col-span-2 lg:col-span-3">
+                            <label for="ph" class="block text-sm font-medium text-earth-700 mb-1.5">Soil pH Level <span class="text-xs text-earth-400 font-normal ml-1">(0.0 - 14.0)</span></label>
+                            <input type="number" id="ph" required step="0.1" min="0" max="14" placeholder="e.g. 6.5" 
+                                class="w-full md:w-1/3 bg-earth-50 border-2 border-earth-200 text-earth-900 text-lg rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors shadow-sm placeholder:text-earth-300">
+                        </div>
+
+                        <!-- Environmental Section -->
+                        <div class="col-span-1 md:col-span-2 lg:col-span-3 pb-2 border-b border-earth-100 mt-4">
+                            <h3 class="text-lg font-semibold text-earth-800 flex items-center gap-2">
+                                <span class="bg-blue-100 text-blue-700 p-1.5 rounded-lg">🌤️</span> Environmental Factors
+                            </h3>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="temperature" class="block text-sm font-medium text-earth-700 mb-1.5">Temperature <span class="text-xs text-earth-400 font-normal ml-1">(°C)</span></label>
+                            <input type="number" id="temperature" required step="0.1" min="0" max="60" placeholder="e.g. 20.8" 
+                                class="w-full bg-earth-50 border-2 border-earth-200 text-earth-900 text-lg rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors shadow-sm placeholder:text-earth-300">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="humidity" class="block text-sm font-medium text-earth-700 mb-1.5">Humidity <span class="text-xs text-earth-400 font-normal ml-1">(%)</span></label>
+                            <input type="number" id="humidity" required step="0.1" min="0" max="100" placeholder="e.g. 82.0" 
+                                class="w-full bg-earth-50 border-2 border-earth-200 text-earth-900 text-lg rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors shadow-sm placeholder:text-earth-300">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="rainfall" class="block text-sm font-medium text-earth-700 mb-1.5">Rainfall <span class="text-xs text-earth-400 font-normal ml-1">(mm)</span></label>
+                            <input type="number" id="rainfall" required step="0.1" min="0" max="500" placeholder="e.g. 202.9" 
+                                class="w-full bg-earth-50 border-2 border-earth-200 text-earth-900 text-lg rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 focus:bg-white transition-colors shadow-sm placeholder:text-earth-300">
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-6">
+                        <button type="submit" id="submit-btn" class="w-full bg-earth-900 hover:bg-earth-800 text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-lg flex justify-center items-center gap-3">
+                            <span>Analyze Parameters</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            
+            <!-- Loading State (Hidden) -->
+            <div id="loading-state" class="hidden bg-white rounded-3xl shadow-xl border border-earth-200 p-12 text-center flex-col items-center justify-center min-h-[400px]">
+                <div class="loader mb-6 mx-auto"></div>
+                <h3 class="text-2xl font-bold text-earth-900 mb-2">Processing Data</h3>
+                <p class="text-earth-500">Running values through the Random Forest model...</p>
+            </div>
+
+            <!-- Result Card (Hidden) -->
+            <div id="result-state" class="hidden bg-white rounded-3xl shadow-2xl border border-emerald-200 overflow-hidden transform transition-all relative">
+                
+                <!-- Confetti/Deco elements -->
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+                
+                <div class="p-8 md:p-12 text-center">
+                    <p class="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-3">Analysis Complete</p>
+                    <h3 class="text-earth-600 text-lg mb-8">Based on the provided dataset, the optimal crop is:</h3>
+                    
+                    <div class="inline-block bg-emerald-50 border border-emerald-100 rounded-3xl p-8 mb-8 shadow-inner w-full max-w-md mx-auto">
+                        <div id="crop-icon" class="text-6xl mb-4">🌾</div>
+                        <h2 id="crop-name" class="text-4xl md:text-5xl font-extrabold text-emerald-800 capitalize">Rice</h2>
+                        <div class="mt-4 inline-flex items-center gap-1.5 text-sm text-emerald-600 font-medium bg-emerald-100 px-3 py-1 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            99.3% Confidence Match
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button onclick="resetForm()" class="bg-earth-100 hover:bg-earth-200 text-earth-800 px-6 py-3 rounded-xl font-medium transition-colors flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                            Analyze Another Field
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-white border-t border-earth-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-earth-900 mb-6">About The Project</h2>
+                    <p class="text-earth-600 mb-4 leading-relaxed">
+                        This web application serves as the frontend interface for Crop Recommendation Using Soil & Weather Data Reference Paper Dataset.
+                    </p>
+                    <p class="text-earth-600 mb-6 leading-relaxed">
+                        The core engine is powered by a machine learning classification algorithm trained on a dataset of 2,200 agricultural records. It takes into account the NPK ratio, acidity, and regional climate data to recommend the most suitable crop out of 22 possible classifications.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-earth-50 p-4 rounded-xl border border-earth-100">
+                            <div class="text-2xl font-bold text-emerald-600 mb-1">2,200+</div>
+                            <div class="text-sm text-earth-600 font-medium">Training Rows</div>
+                        </div>
+                        <div class="bg-earth-50 p-4 rounded-xl border border-earth-100">
+                            <div class="text-2xl font-bold text-emerald-600 mb-1">22</div>
+                            <div class="text-sm text-earth-600 font-medium">Crop Varieties</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-earth-50 rounded-3xl p-8 border border-earth-200">
+                    <h3 class="text-xl font-bold text-earth-900 mb-4">Supported Crops Include</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- Simulated tags -->
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Rice</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Maize</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Chickpea</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Kidneybeans</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Pigeonpeas</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Mothbeans</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Mungbean</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Blackgram</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Lentil</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Pomegranate</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Banana</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Mango</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Grapes</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Watermelon</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Muskmelon</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Apple</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Orange</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Papaya</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Coconut</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Cotton</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Jute</span>
+                        <span class="px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-sm text-earth-700">Coffee</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-earth-900 text-earth-300 py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-emerald-600 rounded flex items-center justify-center text-white text-xs">🌱</div>
+                <span class="font-bold text-white tracking-wide">Crop Talkz</span>
+            </div>
+            <p class="text-sm">Created by group 3</p>
+            <div class="text-sm">
+                Built with <span class="text-emerald-500">Machine Learning</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE LOGIC: Connected to Flask app.py -->
+    ```html
+<script>
+    const form = document.getElementById('prediction-form');
+    const formContainer = document.getElementById('form-container');
+    const loadingState = document.getElementById('loading-state');
+    const resultState = document.getElementById('result-state');
+    const cropNameDisplay = document.getElementById('crop-name');
+    const cropIconDisplay = document.getElementById('crop-icon');
+
+    const cropData = {
+        rice: { icon: "🌾", name: "Rice" },
+        maize: { icon: "🌽", name: "Maize" },
+        chickpea: { icon: "🧆", name: "Chickpea" },
+        kidneybeans: { icon: "🫘", name: "Kidney Beans" },
+        pigeonpeas: { icon: "🫛", name: "Pigeon Peas" },
+        mothbeans: { icon: "🌱", name: "Moth Beans" },
+        mungbean: { icon: "🌱", name: "Mung Bean" },
+        blackgram: { icon: "🌱", name: "Black Gram" },
+        lentil: { icon: "🍲", name: "Lentil" },
+        pomegranate: { icon: "🍎", name: "Pomegranate" },
+        banana: { icon: "🍌", name: "Banana" },
+        mango: { icon: "🥭", name: "Mango" },
+        grapes: { icon: "🍇", name: "Grapes" },
+        watermelon: { icon: "🍉", name: "Watermelon" },
+        muskmelon: { icon: "🍈", name: "Muskmelon" },
+        apple: { icon: "🍎", name: "Apple" },
+        orange: { icon: "🍊", name: "Orange" },
+        papaya: { icon: "🥭", name: "Papaya" },
+        coconut: { icon: "🥥", name: "Coconut" },
+        cotton: { icon: "🧶", name: "Cotton" },
+        jute: { icon: "🌾", name: "Jute" },
+        coffee: { icon: "☕", name: "Coffee" },
+        default: { icon: "🌿", name: "Unknown Crop" }
+    };
+
+    // Reset the form and return to the input screen.
+    // This function must be outside the submit event listener.
+    function resetForm() {
+        form.reset();
+
+        resultState.classList.add('hidden');
+        loadingState.classList.add('hidden');
+        loadingState.classList.remove('flex');
+
+        formContainer.classList.remove('hidden');
+
+        document.getElementById('predict').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        formContainer.classList.add('hidden');
+        resultState.classList.add('hidden');
+
+        loadingState.classList.remove('hidden');
+        loadingState.classList.add('flex');
+
+        const payload = {
+            N: parseFloat(document.getElementById('nitrogen').value),
+            P: parseFloat(document.getElementById('phosphorus').value),
+            K: parseFloat(document.getElementById('potassium').value),
+            temperature: parseFloat(document.getElementById('temperature').value),
+            humidity: parseFloat(document.getElementById('humidity').value),
+            ph: parseFloat(document.getElementById('ph').value),
+            rainfall: parseFloat(document.getElementById('rainfall').value)
+        };
+
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.error || 'Prediction failed.');
+            }
+
+            const predictedCropKey = data.crop
+                .toLowerCase()
+                .replace(/\s+/g, '');
+
+            const cropInfo =
+                cropData[predictedCropKey] || cropData.default;
+
+            cropNameDisplay.innerText = cropInfo.name === 'Unknown Crop'
+                ? data.crop
+                : cropInfo.name;
+
+            cropIconDisplay.innerText = cropInfo.icon;
+
+            loadingState.classList.add('hidden');
+            loadingState.classList.remove('flex');
+
+            resultState.classList.remove('hidden');
+
+            document.getElementById('predict').scrollIntoView({
+                behavior: 'smooth'
+            });
+
+        } catch (error) {
+            console.error('Prediction error:', error);
+
+            alert('Could not analyze the field: ' + error.message);
+
+            loadingState.classList.add('hidden');
+            loadingState.classList.remove('flex');
+
+            formContainer.classList.remove('hidden');
+        }
+    });
+</script>
+```
+</body>
+</html>
